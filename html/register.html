@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | Marketplace</title>
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="card">
+      <header class="card-header">
+        <div class="logo">HE</div>
+        <h1>Create your account</h1>
+        <p>Join as a producer to sell, or as a consumer to buy.</p>
+      </header>
+
+      <form id="registerForm" novalidate>
+        <!-- Role -->
+        <div class="role-switch">
+          <input type="radio" id="roleConsumer" name="role" value="consumer" checked />
+          <label for="roleConsumer">
+            <span class="role-icon">🛒</span>
+            <strong>Consumer</strong>
+            <small>I want to buy</small>
+          </label>
+
+          <input type="radio" id="roleProducer" name="role" value="producer" />
+          <label for="roleProducer">
+            <span class="role-icon">🌾</span>
+            <strong>Producer</strong>
+            <small>I want to sell</small>
+          </label>
+        </div>
+
+        <!-- Profile picture -->
+        <div class="avatar-box">
+          <label for="profilePicture" class="avatar" id="avatarPreview" title="Upload profile picture">
+            <span id="avatarPlaceholder">+</span>
+            <img id="avatarImg" alt="Profile preview" hidden />
+          </label>
+          <input type="file" id="profilePicture" name="profilePicture" accept="image/png,image/jpeg,image/webp" hidden />
+          <p class="hint">Profile picture (JPG, PNG or WEBP, max 2MB)</p>
+          <span class="error" id="profilePictureError"></span>
+        </div>
+
+        <!-- Name -->
+        <div class="row">
+          <div class="field">
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Henok" autocomplete="given-name" />
+            <span class="error"></span>
+          </div>
+          <div class="field">
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Beyene" autocomplete="family-name" />
+            <span class="error"></span>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" />
+          <span class="error"></span>
+        </div>
+
+        <!-- Birthday + Gender -->
+        <div class="row">
+          <div class="field">
+            <label for="birthday">Birthday</label>
+            <input type="date" id="birthday" name="birthday" />
+            <span class="error"></span>
+          </div>
+          <div class="field">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+            <span class="error"></span>
+          </div>
+        </div>
+
+        <!-- Country + City -->
+        <div class="row">
+          <div class="field">
+            <label for="country">Country</label>
+            <select id="country" name="country">
+              <option value="">Select country</option>
+            </select>
+            <span class="error"></span>
+          </div>
+          <div class="field">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" placeholder="Hawassa" autocomplete="address-level2" />
+            <span class="error"></span>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="field">
+          <label for="address">Street / Address</label>
+          <input type="text" id="address" name="address" placeholder="Kebele, street, house number" autocomplete="street-address" />
+          <span class="error"></span>
+        </div>
+
+        <!-- Phone -->
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <div class="phone-wrap">
+            <span class="dial" id="dialCode">+000</span>
+            <input type="tel" id="phone" name="phone" placeholder="912345678" autocomplete="tel-national" inputmode="numeric" />
+          </div>
+          <span class="error"></span>
+        </div>
+
+        <!-- Password -->
+        <div class="row">
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="pass-wrap">
+              <input type="password" id="password" name="password" placeholder="Min. 8 characters" autocomplete="new-password" />
+              <button type="button" class="toggle-pass" data-target="password" aria-label="Show password">👁</button>
+            </div>
+            <div class="strength"><div class="strength-bar" id="strengthBar"></div></div>
+            <small class="strength-text" id="strengthText"></small>
+            <span class="error"></span>
+          </div>
+          <div class="field">
+            <label for="confirmPassword">Confirm password</label>
+            <div class="pass-wrap">
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat password" autocomplete="new-password" />
+              <button type="button" class="toggle-pass" data-target="confirmPassword" aria-label="Show password">👁</button>
+            </div>
+            <span class="error"></span>
+          </div>
+        </div>
+
+        <!-- Terms -->
+        <div class="field terms">
+          <label class="check">
+            <input type="checkbox" id="terms" name="terms" />
+            <span>I agree to the Terms and understand that the platform keeps a <strong>25% commission</strong> on each sale.</span>
+          </label>
+          <span class="error"></span>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn">Create account</button>
+        <div class="form-message" id="formMessage" role="alert"></div>
+
+        <p class="switch">Already have an account? <a href="login.html">Log in</a></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="../js/register.js"></script>
+</body>
+</html>
