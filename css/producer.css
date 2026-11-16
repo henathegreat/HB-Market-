@@ -1,0 +1,198 @@
+/* Extra styles for the producer dashboard (used together with style.css and dashboard.css) */
+
+/* ---------- Tabs ---------- */
+.subnav {
+  display: flex;
+  gap: 4px;
+  padding: 0 16px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+.mini.ok { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
+.mini.ok:hover { background: var(--primary-dark); }
+
+/* ---------- Payout account card ---------- */
+.payout-card {
+  margin-bottom: 22px;
+  padding: 14px 16px;
+  background: #fff;
+  border-left: 4px solid var(--primary);
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
+}
+
+.payout-card.missing { background: #fffbeb; border-left-color: #f59e0b; }
+
+.payout-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.payout-head h3 { font-size: 16px; }
+.payout-head .mini { flex: none; padding: 7px 14px; }
+
+.payout-text { margin-top: 6px; color: #334155; font-size: 14px; line-height: 1.5; word-break: break-word; }
+
+.pay-note { margin-bottom: 14px; }
+
+/* ---------- Sales summary ---------- */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.stat-card {
+  padding: 16px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
+}
+
+.stat-card span { display: block; color: var(--muted); font-size: 13px; }
+.stat-card strong { display: block; margin-top: 6px; font-size: 20px; }
+
+.summary-note { margin-bottom: 18px; }
+
+/* ---------- Sale cards with progress steps ---------- */
+.sale-card {
+  margin-bottom: 14px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
+}
+
+.sale-head { display: flex; gap: 12px; align-items: flex-start; }
+
+.sale-thumb {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  background: #f1f5f9;
+  border-radius: 12px;
+  font-size: 26px;
+}
+
+.sale-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.sale-title h3 { font-size: 16px; word-break: break-word; }
+.sale-title .meta { margin-top: 3px; color: var(--muted); font-size: 13px; }
+
+.steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.steps li {
+  padding: 10px;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.steps .dot {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.steps strong { font-size: 13px; }
+.steps small { display: block; margin-top: 4px; color: var(--muted); line-height: 1.4; }
+
+.steps li.done { background: #f0fdf4; border-color: #bbf7d0; }
+.steps li.done .dot { background: var(--primary); color: #fff; }
+
+.steps li.current { background: #fffbeb; border-color: #fde68a; }
+.steps li.current .dot { background: #f59e0b; color: #fff; }
+
+.steps li.bad { background: #fef2f2; border-color: #fecaca; }
+.steps li.bad .dot { background: var(--danger); color: #fff; }
+
+.customer-box {
+  margin-top: 4px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.sale-actions { margin-top: 12px; }
+.sale-actions .mini { flex: none; padding: 9px 18px; }
+
+/* ---------- Photo gallery manager ---------- */
+.gallery { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+
+.g-item {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  overflow: hidden;
+  background: #f1f5f9;
+  border-radius: 12px;
+}
+
+.g-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.g-badge {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  padding: 1px 7px;
+  background: rgba(15, 23, 42, 0.75);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 11px;
+}
+
+.g-del {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: rgba(15, 23, 42, 0.75);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.g-del:hover { background: var(--danger); }
+
+.gallery-error { display: block; margin-top: 5px; color: var(--danger); font-size: 12px; }

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Producer Dashboard | Marketplace</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/producer.css" />
+  <link rel="stylesheet" href="../css/chat.css" />
+</head>
+<body>
+
+  <!-- ===== Top bar ===== -->
+  <header class="topbar">
+    <a class="brand" href="#" id="brandLink">
+      <span class="logo-sm">M</span>
+      <span class="brand-text">Marketplace</span>
+    </a>
+
+    <form class="search" id="searchForm" role="search">
+      <select id="searchBy" aria-label="Search by">
+        <option value="all">All</option>
+        <option value="product">Product name</option>
+        <option value="producer">Producer name</option>
+        <option value="nickname">Nickname</option>
+      </select>
+      <input type="search" id="searchInput" placeholder="Search products or producers..." maxlength="60" autocomplete="off" />
+      <button type="submit" aria-label="Search">🔎</button>
+    </form>
+
+    <div class="top-actions">
+      <button type="button" class="avatar-btn" id="myProfileBtn" aria-label="My profile"><span id="topAvatar"></span></button>
+      <button type="button" class="link-btn" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <nav class="subnav" aria-label="Main">
+    <button type="button" class="tab active" data-tab="profile">My profile</button>
+    <button type="button" class="tab" data-tab="sales">My sales</button>
+    <button type="button" class="tab" data-tab="messages">Messages<span class="msg-badge" data-chat-badge hidden>0</span></button>
+  </nav>
+
+  <main class="container">
+
+    <!-- ===== VIEW 1: My profile ===== -->
+    <section id="viewProfile" class="view">
+      <div class="profile-card">
+        <div class="cover"></div>
+        <div class="profile-body">
+          <div class="avatar-lg" id="profileAvatar"></div>
+          <div class="profile-info">
+            <h1 id="profileName">Loading...</h1>
+            <p class="nick" id="profileNick"></p>
+            <p class="bio" id="profileBio"></p>
+            <p class="meta" id="profileLocation"></p>
+          </div>
+          <div class="profile-actions">
+            <button type="button" class="btn inline" id="openPostBtn">+ Post product</button>
+            <button type="button" class="btn inline secondary" id="openEditProfileBtn">Edit profile</button>
+          </div>
+        </div>
+        <div class="stats">
+          <div><strong id="statProducts">0</strong><span>Products</span></div>
+          <div><strong id="statSold">0</strong><span>Items sold</span></div>
+          <div><strong id="statEarnings">0</strong><span>Your earnings (75%)</span></div>
+        </div>
+      </div>
+
+      <div class="payout-card missing" id="payoutCard">
+        <div class="payout-head">
+          <h3>💳 Where we send your money</h3>
+          <button type="button" class="mini" id="openPayoutBtn">Add account</button>
+        </div>
+        <p class="payout-text" id="payoutText">Loading...</p>
+      </div>
+
+      <div class="section-head"><h2>My products</h2></div>
+      <div class="grid" id="myProducts"></div>
+      <p class="empty" id="myProductsEmpty" hidden>You have not posted any products yet. Click "+ Post product" to start selling.</p>
+    </section>
+
+    <!-- ===== VIEW: My sales and payment progress ===== -->
+    <section id="viewSales" class="view" hidden>
+      <div class="section-head"><h2>My sales</h2></div>
+
+      <div class="summary-grid">
+        <div class="stat-card"><span>Waiting for customer payment</span><strong id="slAwaiting">ETB 0.00</strong></div>
+        <div class="stat-card"><span>Paid, to be delivered</span><strong id="slProgress">ETB 0.00</strong></div>
+        <div class="stat-card"><span>Ready for your payout</span><strong id="slReady">ETB 0.00</strong></div>
+        <div class="stat-card"><span>Already paid to you</span><strong id="slPaid">ETB 0.00</strong></div>
+      </div>
+      <p class="hint-text summary-note">These amounts are your 75% share, after the 25% platform commission.</p>
+
+      <div id="salesList"></div>
+      <p class="empty" id="salesEmpty" hidden>You have no sales yet.</p>
+    </section>
+
+    <!-- ===== VIEW 2: Search results ===== -->
+    <section id="viewSearch" class="view" hidden>
+      <div class="section-head">
+        <h2 id="searchTitle">Search results</h2>
+        <button type="button" class="link-btn" id="clearSearchBtn">← Back to my profile</button>
+      </div>
+
+      <div id="searchProductsBox">
+        <h3 class="sub">Products</h3>
+        <div class="grid" id="searchProducts"></div>
+        <p class="empty" id="searchProductsEmpty" hidden>No products found.</p>
+      </div>
+
+      <div id="searchProducersBox">
+        <h3 class="sub">Producers</h3>
+        <div class="grid people" id="searchProducers"></div>
+        <p class="empty" id="searchProducersEmpty" hidden>No producers found.</p>
+      </div>
+    </section>
+
+    <!-- ===== VIEW 3: Another producer's profile ===== -->
+    <section id="viewProducer" class="view" hidden>
+      <div class="section-head">
+        <button type="button" class="link-btn" id="backBtn">← Back</button>
+      </div>
+
+      <div class="profile-card">
+        <div class="cover"></div>
+        <div class="profile-body">
+          <div class="avatar-lg" id="pvAvatar"></div>
+          <div class="profile-info">
+            <h1 id="pvName"></h1>
+            <p class="nick" id="pvNick"></p>
+            <p class="bio" id="pvBio"></p>
+            <p class="meta" id="pvLocation"></p>
+            <p class="meta" id="pvJoined"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head"><h2>Products by this producer</h2></div>
+      <div class="grid" id="pvProducts"></div>
+      <p class="empty" id="pvEmpty" hidden>This producer has no products yet.</p>
+    </section>
+
+  </main>
+
+  <!-- ===== Modal: post product ===== -->
+  <div class="modal" id="postModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="postTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="postTitle">Post a new product</h2>
+
+      <form id="postForm" novalidate>
+        <div class="field">
+          <label for="pName">Product name</label>
+          <input type="text" id="pName" name="name" maxlength="120" placeholder="e.g. Fresh honey 1kg" />
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="pDesc">Description</label>
+          <textarea id="pDesc" name="description" rows="3" maxlength="1000" placeholder="Tell buyers about your product..."></textarea>
+          <span class="error"></span>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="pPrice">Price (ETB)</label>
+            <input type="number" id="pPrice" name="price" min="0.01" step="0.01" placeholder="0.00" />
+            <span class="error"></span>
+          </div>
+          <div class="field">
+            <label for="pStock">Stock (quantity)</label>
+            <input type="number" id="pStock" name="stock" min="0" step="1" placeholder="0" />
+            <span class="error"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="pImage">Product photo (max 3MB)</label>
+          <input type="file" id="pImage" name="image" accept="image/png,image/jpeg,image/webp" />
+          <img id="pImagePreview" class="preview" alt="Photo preview" hidden />
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="pExtra">More photos (up to 5, max 3MB each)</label>
+          <input type="file" id="pExtra" name="extra" accept="image/png,image/jpeg,image/webp" multiple />
+          <small class="hint-text">Extra photos from different sides attract more buyers.</small>
+          <span class="error"></span>
+        </div>
+
+        <button type="submit" class="btn" id="postSubmit">Post product</button>
+        <div class="form-message" id="postMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: edit product ===== -->
+  <div class="modal" id="editModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="editTitle">Edit product</h2>
+
+      <form id="editForm" novalidate>
+        <input type="hidden" name="id" id="eId" />
+
+        <div class="field">
+          <label for="eName">Product name</label>
+          <input type="text" id="eName" name="name" maxlength="120" />
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="eDesc">Description</label>
+          <textarea id="eDesc" name="description" rows="3" maxlength="1000"></textarea>
+          <span class="error"></span>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="ePrice">Price (ETB)</label>
+            <input type="number" id="ePrice" name="price" min="0.01" step="0.01" />
+            <span class="error"></span>
+          </div>
+          <div class="field">
+            <label for="eStock">Stock (quantity)</label>
+            <input type="number" id="eStock" name="stock" min="0" step="1" />
+            <span class="error"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Product photos</label>
+          <div class="gallery" id="gallery"></div>
+          <input type="file" id="galleryInput" accept="image/png,image/jpeg,image/webp" multiple />
+          <small class="hint-text">Choose photos to add them right away (up to 5 extra photos, 3MB each).</small>
+          <span class="gallery-error" id="galleryError"></span>
+        </div>
+
+        <button type="submit" class="btn" id="editSubmit">Save changes</button>
+        <div class="form-message" id="editMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: edit profile ===== -->
+  <div class="modal" id="profileModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="profileTitle">Edit profile</h2>
+
+      <form id="profileForm" novalidate>
+        <div class="field">
+          <label for="fNick">Nickname</label>
+          <input type="text" id="fNick" name="nickname" maxlength="30" placeholder="e.g. henok_farm" autocomplete="off" />
+          <small class="hint-text">3 to 30 characters: letters, numbers, dot, dash or underscore. Buyers can find you with it.</small>
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="fBio">Bio</label>
+          <textarea id="fBio" name="bio" rows="3" maxlength="300" placeholder="Tell buyers about you and your farm or business..."></textarea>
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="fPhoto">Profile picture (max 2MB)</label>
+          <input type="file" id="fPhoto" name="profilePicture" accept="image/png,image/jpeg,image/webp" />
+          <img id="profilePreview" class="preview" alt="Photo preview" hidden />
+          <span class="error"></span>
+        </div>
+
+        <button type="submit" class="btn" id="profileSubmit">Save profile</button>
+        <div class="form-message" id="profileMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: payout account ===== -->
+  <div class="modal" id="payoutModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="payoutTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="payoutTitle">Your payout account</h2>
+      <p class="hint-text pay-note">After the customer receives the product, we send your 75% to this account.</p>
+
+      <form id="payoutForm" novalidate>
+        <div class="field">
+          <label for="poBank">Bank name</label>
+          <input type="text" id="poBank" name="bankName" maxlength="60" placeholder="e.g. Commercial Bank of Ethiopia" />
+          <span class="error"></span>
+        </div>
+        <div class="field">
+          <label for="poName">Account holder name</label>
+          <input type="text" id="poName" name="accountName" maxlength="80" />
+          <span class="error"></span>
+        </div>
+        <div class="field">
+          <label for="poNumber">Account number</label>
+          <input type="text" id="poNumber" name="accountNumber" maxlength="25" inputmode="numeric" autocomplete="off" />
+          <span class="error"></span>
+        </div>
+        <div class="field">
+          <label for="poMobile">Mobile money number (optional)</label>
+          <input type="text" id="poMobile" name="mobile" maxlength="16" inputmode="tel" placeholder="+251..." />
+          <span class="error"></span>
+        </div>
+        <button type="submit" class="btn" id="payoutSubmit">Save account</button>
+        <div class="form-message" id="payoutMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="../js/producer.js"></script>
+  <script src="../js/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in | Marketplace</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+</head>
+<body>
+  <main class="page center">
+    <section class="card small">
+      <header class="card-header">
+        <div class="logo">HB</div>
+        <h1>Welcome back</h1>
+        <p>Log in to your account to continue.</p>
+      </header>
+
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" />
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="password" name="password" placeholder="Your password" autocomplete="current-password" />
+            <button type="button" class="toggle-pass" data-target="password" aria-label="Show password">👁</button>
+          </div>
+          <span class="error"></span>
+        </div>
+
+        <div class="options">
+          <label class="check">
+            <input type="checkbox" id="remember" name="remember" />
+            <span>Remember me</span>
+          </label>
+          <a href="forgot-password.html">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn" id="submitBtn">Log in</button>
+        <div class="form-message" id="formMessage" role="alert"></div>
+
+        <p class="switch">Don't have an account? <a href="register.html">Create account</a></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="../js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+/* Extra styles for login, forgot password and reset password pages */
+
+.page.center {
+  align-items: center;
+  min-height: 100vh;
+}
+
+.card.small {
+  max-width: 440px;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
+.options .check {
+  margin: 0;
+  align-items: center;
+}
+
+.options a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.options a:hover {
+  text-decoration: underline;
+}

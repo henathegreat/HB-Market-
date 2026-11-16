@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop | Marketplace</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/consumer.css" />
+  <link rel="stylesheet" href="../css/chat.css" />
+</head>
+<body>
+
+  <!-- ===== Top bar ===== -->
+  <header class="topbar">
+    <a class="brand" href="#" id="brandLink">
+      <span class="logo-sm">M</span>
+      <span class="brand-text">Marketplace</span>
+    </a>
+
+    <form class="search" id="searchForm" role="search">
+      <select id="searchBy" aria-label="Search by">
+        <option value="all">All</option>
+        <option value="product">Product name</option>
+        <option value="producer">Producer name</option>
+        <option value="nickname">Nickname</option>
+      </select>
+      <input type="search" id="searchInput" placeholder="Search products or producers..." maxlength="60" autocomplete="off" />
+      <button type="submit" aria-label="Search">🔎</button>
+    </form>
+
+    <div class="top-actions">
+      <button type="button" class="link-btn" id="messagesBtn">💬 Messages<span class="msg-badge" data-chat-badge hidden>0</span></button>
+      <button type="button" class="cart-btn" id="cartBtn" aria-label="Open cart">🛒<span class="badge" id="cartBadge" hidden>0</span></button>
+      <button type="button" class="avatar-btn" id="myAccountBtn" aria-label="My account"><span id="topAvatar"></span></button>
+      <button type="button" class="link-btn" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <!-- ===== Tabs ===== -->
+  <nav class="subnav" aria-label="Main">
+    <button type="button" class="tab active" data-tab="shop">Shop</button>
+    <button type="button" class="tab" data-tab="orders">My orders</button>
+    <button type="button" class="tab" data-tab="account">My account</button>
+  </nav>
+
+  <main class="container">
+
+    <!-- ===== VIEW: Shop ===== -->
+    <section id="viewShop" class="view">
+      <div class="section-head"><h2>Fresh from our producers</h2></div>
+      <div class="grid" id="shopProducts"></div>
+      <p class="empty" id="shopEmpty" hidden>No products have been posted yet. Please check again soon.</p>
+    </section>
+
+    <!-- ===== VIEW: Search results ===== -->
+    <section id="viewSearch" class="view" hidden>
+      <div class="section-head">
+        <h2 id="searchTitle">Search results</h2>
+        <button type="button" class="link-btn" id="clearSearchBtn">← Back to shop</button>
+      </div>
+
+      <div id="searchProductsBox">
+        <h3 class="sub">Products</h3>
+        <div class="grid" id="searchProducts"></div>
+        <p class="empty" id="searchProductsEmpty" hidden>No products found.</p>
+      </div>
+
+      <div id="searchProducersBox">
+        <h3 class="sub">Producers</h3>
+        <div class="grid people" id="searchProducers"></div>
+        <p class="empty" id="searchProducersEmpty" hidden>No producers found.</p>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: Producer profile ===== -->
+    <section id="viewProducer" class="view" hidden>
+      <div class="section-head">
+        <button type="button" class="link-btn" id="backBtn">← Back</button>
+      </div>
+
+      <div class="profile-card">
+        <div class="cover"></div>
+        <div class="profile-body">
+          <div class="avatar-lg" id="pvAvatar"></div>
+          <div class="profile-info">
+            <h1 id="pvName"></h1>
+            <p class="nick" id="pvNick"></p>
+            <p class="bio" id="pvBio"></p>
+            <p class="meta" id="pvLocation"></p>
+            <p class="meta" id="pvJoined"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head"><h2>Products by this producer</h2></div>
+      <div class="grid" id="pvProducts"></div>
+      <p class="empty" id="pvEmpty" hidden>This producer has no products yet.</p>
+    </section>
+
+    <!-- ===== VIEW: My orders ===== -->
+    <section id="viewOrders" class="view" hidden>
+      <div class="section-head"><h2>My orders</h2></div>
+      <div id="ordersList"></div>
+      <p class="empty" id="ordersEmpty" hidden>You have not placed any orders yet.</p>
+    </section>
+
+    <!-- ===== VIEW: My account ===== -->
+    <section id="viewAccount" class="view" hidden>
+      <div class="profile-card">
+        <div class="cover"></div>
+        <div class="profile-body">
+          <div class="avatar-lg" id="acAvatar"></div>
+          <div class="profile-info">
+            <h1 id="acName">Loading...</h1>
+            <p class="nick" id="acNick"></p>
+            <p class="bio" id="acBio"></p>
+          </div>
+          <div class="profile-actions">
+            <button type="button" class="btn inline secondary" id="openEditProfileBtn">Edit profile</button>
+          </div>
+        </div>
+        <dl class="details">
+          <div><dt>Email</dt><dd id="acEmail"></dd></div>
+          <div><dt>Phone</dt><dd id="acPhone"></dd></div>
+          <div><dt>Address</dt><dd id="acAddress"></dd></div>
+        </dl>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Cart drawer ===== -->
+  <div class="modal drawer" id="cartDrawer" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="cartTitle">Your cart</h2>
+
+      <div class="cart-items" id="cartItems"></div>
+
+      <div class="cart-footer">
+        <div class="cart-total"><span>Total</span><span id="cartTotal">ETB 0.00</span></div>
+        <p class="deliver" id="cartDeliver"></p>
+        <button type="button" class="btn" id="placeOrderBtn">Place order</button>
+        <div class="form-message" id="cartMessage" role="alert"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal: payment (send bank transfer receipt) ===== -->
+  <div class="modal" id="payModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="payTitle">Pay for your order</h2>
+
+      <div class="pay-summary">
+        <p>Order <strong id="payOrderNo"></strong> · Amount to pay</p>
+        <p class="pay-amount" id="payAmount"></p>
+      </div>
+
+      <div class="pay-info" id="payInfo">Loading payment details...</div>
+
+      <form id="payForm" novalidate>
+        <div class="field">
+          <label for="payMethod">Payment method</label>
+          <select id="payMethod" name="method">
+            <option value="bank_transfer">Bank transfer</option>
+            <option value="telebirr">Telebirr</option>
+          </select>
+          <span class="error"></span>
+        </div>
+
+        <div class="field" id="payBankField">
+          <label for="payBank">Your bank name</label>
+          <input type="text" id="payBank" name="senderBank" maxlength="60" placeholder="e.g. Commercial Bank of Ethiopia" autocomplete="off" />
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="payRef">Transaction / reference number</label>
+          <input type="text" id="payRef" name="reference" maxlength="60" placeholder="Found on your receipt or SMS" autocomplete="off" />
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="payAmountInput">Amount you sent (ETB)</label>
+          <input type="number" id="payAmountInput" name="amountPaid" min="0.01" step="0.01" />
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="payReceipt">Receipt photo (JPG, PNG or WEBP, max 4MB)</label>
+          <input type="file" id="payReceipt" name="receipt" accept="image/png,image/jpeg,image/webp" />
+          <img id="payPreview" class="preview" alt="Receipt preview" hidden />
+          <span class="error"></span>
+        </div>
+
+        <button type="submit" class="btn" id="paySubmit">Send receipt</button>
+        <div class="form-message" id="payMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: product details + price calculator ===== -->
+  <div class="modal" id="productModal" hidden>
+    <div class="modal-box wide" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+
+      <div class="detail">
+        <div class="detail-gallery">
+          <div class="detail-img" id="dImage"></div>
+          <div class="detail-thumbs" id="dThumbs"></div>
+        </div>
+
+        <div class="detail-info">
+          <h2 id="dTitle"></h2>
+          <p class="detail-price" id="dPrice"></p>
+          <p class="stock" id="dStock"></p>
+          <p class="detail-by" id="dBy"></p>
+          <div class="detail-desc" id="dDesc"></div>
+
+          <div class="calc">
+            <h3>Price calculator</h3>
+            <div class="calc-qty">
+              <button type="button" id="dMinus" aria-label="Less">−</button>
+              <input type="number" id="dQty" min="1" step="1" value="1" aria-label="Quantity" />
+              <button type="button" id="dPlus" aria-label="More">+</button>
+            </div>
+            <div class="calc-lines">
+              <div><span>Price each</span><span id="dEach"></span></div>
+              <div><span>Quantity</span><span id="dQtyText"></span></div>
+              <div class="calc-total"><span>Total</span><span id="dTotal"></span></div>
+            </div>
+            <p class="calc-note" id="dNote"></p>
+          </div>
+
+          <button type="button" class="btn" id="dAddBtn">Add to cart</button>
+          <button type="button" class="btn secondary" id="dChatBtn" style="margin-top:8px">💬 Ask the seller about this product</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal: edit profile ===== -->
+  <div class="modal" id="profileModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="profileTitle">Edit profile</h2>
+
+      <form id="profileForm" novalidate>
+        <div class="field">
+          <label for="fNick">Nickname (optional)</label>
+          <input type="text" id="fNick" name="nickname" maxlength="30" placeholder="e.g. henok_b" autocomplete="off" />
+          <small class="hint-text">3 to 30 characters: letters, numbers, dot, dash or underscore.</small>
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="fBio">Bio (optional)</label>
+          <textarea id="fBio" name="bio" rows="3" maxlength="300" placeholder="A few words about you..."></textarea>
+          <span class="error"></span>
+        </div>
+
+        <div class="field">
+          <label for="fPhoto">Profile picture (max 2MB)</label>
+          <input type="file" id="fPhoto" name="profilePicture" accept="image/png,image/jpeg,image/webp" />
+          <img id="profilePreview" class="preview" alt="Photo preview" hidden />
+          <span class="error"></span>
+        </div>
+
+        <button type="submit" class="btn" id="profileSubmit">Save profile</button>
+        <div class="form-message" id="profileMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="../js/consumer.js"></script>
+  <script src="../js/chat.js"></script>
+</body>
+</html>

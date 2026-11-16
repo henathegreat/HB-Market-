@@ -1,5 +1,4 @@
-{
-  "name": "hb-marketplace",
+{ "name": "hb-marketplace",
   "version": "1.0.0",
   "description": "Producer to consumer marketplace with 25% commission",
   "main": "server.js",

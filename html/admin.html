@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin | Marketplace</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="logo-sm">M</span>
+      <span class="brand-text">Admin panel</span>
+    </a>
+    <div class="top-actions">
+      <span class="muted" id="adminName"></span>
+      <button type="button" class="link-btn" id="myPassBtn">My password</button>
+      <button type="button" class="link-btn" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <nav class="admin-tabs" aria-label="Sections">
+    <button type="button" class="tab active" data-tab="overview">Overview</button>
+    <button type="button" class="tab" data-tab="payments">Payments</button>
+    <button type="button" class="tab" data-tab="users">Users</button>
+    <button type="button" class="tab" data-tab="products">Products</button>
+    <button type="button" class="tab" data-tab="orders">Orders</button>
+    <button type="button" class="tab" data-tab="payouts">Payouts</button>
+  </nav>
+
+  <main class="container">
+
+    <!-- ===== Overview ===== -->
+    <section id="tabOverview" class="tab-panel">
+      <div class="section-head"><h2>Money</h2></div>
+      <div class="summary">
+        <div class="stat-card"><span>Receipts waiting</span><strong id="sumWaiting">0</strong></div>
+        <div class="stat-card"><span>Confirmed payments</span><strong id="sumConfirmed">ETB 0.00</strong></div>
+        <div class="stat-card"><span>Platform commission (25%)</span><strong id="sumCommission">ETB 0.00</strong></div>
+        <div class="stat-card"><span>Producers' earnings (75%)</span><strong id="sumEarnings">ETB 0.00</strong></div>
+      </div>
+
+      <div class="section-head"><h2>Platform</h2></div>
+      <div class="summary">
+        <div class="stat-card"><span>Consumers</span><strong id="ovConsumers">0</strong></div>
+        <div class="stat-card"><span>Producers</span><strong id="ovProducers">0</strong></div>
+        <div class="stat-card"><span>Products in the shop</span><strong id="ovProducts">0</strong></div>
+        <div class="stat-card"><span>All orders</span><strong id="ovOrders">0</strong></div>
+        <div class="stat-card"><span>Orders waiting for payment</span><strong id="ovPending">0</strong></div>
+        <div class="stat-card"><span>Blocked accounts</span><strong id="ovBlocked">0</strong></div>
+      </div>
+    </section>
+
+    <!-- ===== Payments ===== -->
+    <section id="tabPayments" class="tab-panel" hidden>
+      <div class="section-head"><h2>Payment receipts</h2></div>
+
+      <div class="filters">
+        <button type="button" class="filter active" data-status="submitted">Waiting for review</button>
+        <button type="button" class="filter" data-status="confirmed">Confirmed</button>
+        <button type="button" class="filter" data-status="rejected">Rejected</button>
+      </div>
+
+      <div id="paymentList"></div>
+      <p class="empty" id="paymentEmpty" hidden>Nothing here.</p>
+    </section>
+
+    <!-- ===== Users ===== -->
+    <section id="tabUsers" class="tab-panel" hidden>
+      <div class="section-head"><h2>Users</h2><span class="muted" id="usersCount"></span></div>
+
+      <form class="toolbar" id="userSearchForm" role="search">
+        <input type="search" id="userQ" placeholder="Search name, email, phone, nickname..." maxlength="60" autocomplete="off" />
+        <select id="userRole" aria-label="Role">
+          <option value="">All roles</option>
+          <option value="consumer">Consumers</option>
+          <option value="producer">Producers</option>
+          <option value="admin">Admins</option>
+        </select>
+        <button type="submit" class="btn inline">Search</button>
+      </form>
+
+      <div id="usersList"></div>
+      <p class="empty" id="usersEmpty" hidden>No users found.</p>
+      <div class="pager" id="usersPager"></div>
+    </section>
+
+    <!-- ===== Products ===== -->
+    <section id="tabProducts" class="tab-panel" hidden>
+      <div class="section-head"><h2>Products</h2><span class="muted" id="productsCount"></span></div>
+
+      <form class="toolbar" id="productSearchForm" role="search">
+        <input type="search" id="productQ" placeholder="Search product or producer name..." maxlength="60" autocomplete="off" />
+        <select id="productStatus" aria-label="Visibility">
+          <option value="all">All products</option>
+          <option value="active">Visible in shop</option>
+          <option value="hidden">Hidden</option>
+        </select>
+        <button type="submit" class="btn inline">Search</button>
+      </form>
+
+      <div id="productsList"></div>
+      <p class="empty" id="productsEmpty" hidden>No products found.</p>
+      <div class="pager" id="productsPager"></div>
+    </section>
+
+    <!-- ===== Orders ===== -->
+    <section id="tabOrders" class="tab-panel" hidden>
+      <div class="section-head"><h2>Orders</h2><span class="muted" id="ordersCount"></span></div>
+
+      <form class="toolbar" id="orderSearchForm" role="search">
+        <input type="search" id="orderQ" placeholder="Order number, customer name or email..." maxlength="60" autocomplete="off" />
+        <select id="orderStatusFilter" aria-label="Status">
+          <option value="">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+        <button type="submit" class="btn inline">Search</button>
+      </form>
+
+      <div id="ordersList"></div>
+      <p class="empty" id="ordersEmpty" hidden>No orders found.</p>
+      <div class="pager" id="ordersPager"></div>
+    </section>
+
+    <!-- ===== Payouts to producers ===== -->
+    <section id="tabPayouts" class="tab-panel" hidden>
+      <div class="section-head"><h2>Payouts to producers</h2></div>
+      <p class="hint-text">Money owed = the producer's 75% for items the customer has received. Send it by bank transfer, then record the transfer reference here.</p>
+      <div id="payoutsList"></div>
+      <p class="empty" id="payoutsEmpty" hidden>No producer sales yet.</p>
+    </section>
+
+  </main>
+
+  <!-- ===== Modal: record payout ===== -->
+  <div class="modal" id="payoutModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="payoutTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="payoutTitle">Record payout</h2>
+      <p class="hint-text" id="payoutNote"></p>
+
+      <form id="payoutForm" novalidate>
+        <div class="field">
+          <label for="payoutRef">Bank transfer reference</label>
+          <input type="text" id="payoutRef" name="reference" maxlength="80" autocomplete="off" />
+          <span class="error"></span>
+        </div>
+        <button type="submit" class="btn" id="payoutSubmit">Mark as paid</button>
+        <div class="form-message" id="payoutMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: receipt photo ===== -->
+  <div class="modal" id="receiptModal" hidden>
+    <div class="modal-box wide" role="dialog" aria-modal="true" aria-labelledby="receiptTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="receiptTitle">Receipt</h2>
+      <img id="receiptImg" class="receipt-img" alt="Payment receipt" />
+    </div>
+  </div>
+
+  <!-- ===== Modal: reject payment ===== -->
+  <div class="modal" id="rejectModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="rejectTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="rejectTitle">Reject this receipt</h2>
+
+      <form id="rejectForm" novalidate>
+        <div class="field">
+          <label for="rejectNote">Reason (the customer will see this)</label>
+          <textarea id="rejectNote" name="note" rows="3" maxlength="200" placeholder="e.g. The amount on the receipt does not match."></textarea>
+          <span class="error"></span>
+        </div>
+        <button type="submit" class="btn" id="rejectSubmit">Reject receipt</button>
+        <div class="form-message" id="rejectMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: edit user ===== -->
+  <div class="modal" id="userModal" hidden>
+    <div class="modal-box wide" role="dialog" aria-modal="true" aria-labelledby="userTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="userTitle">Edit user</h2>
+
+      <form id="userForm" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="uFirst">First name</label>
+            <input type="text" id="uFirst" name="firstName" maxlength="50" />
+          </div>
+          <div class="field">
+            <label for="uLast">Last name</label>
+            <input type="text" id="uLast" name="lastName" maxlength="50" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="uEmail">Email</label>
+            <input type="email" id="uEmail" name="email" maxlength="120" />
+          </div>
+          <div class="field">
+            <label for="uPhone">Phone (with country code)</label>
+            <input type="tel" id="uPhone" name="phone" placeholder="+251912345678" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="uBirthday">Birthday</label>
+            <input type="date" id="uBirthday" name="birthday" />
+          </div>
+          <div class="field">
+            <label for="uGender">Gender</label>
+            <select id="uGender" name="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="uCountry">Country</label>
+            <input type="text" id="uCountry" name="country" maxlength="60" />
+          </div>
+          <div class="field">
+            <label for="uCity">City</label>
+            <input type="text" id="uCity" name="city" maxlength="60" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="uAddress">Address</label>
+          <input type="text" id="uAddress" name="address" maxlength="200" />
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="uRole">Role</label>
+            <select id="uRole" name="role">
+              <option value="consumer">Consumer</option>
+              <option value="producer">Producer</option>
+              <option value="admin">Admin</option>
+            </select>
+            <small class="hint-text" id="userRoleNote" hidden>You cannot change your own role.</small>
+          </div>
+          <div class="field">
+            <label for="uNick">Nickname</label>
+            <input type="text" id="uNick" name="nickname" maxlength="30" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="uBio">Bio</label>
+          <textarea id="uBio" name="bio" rows="2" maxlength="300"></textarea>
+        </div>
+
+        <button type="submit" class="btn" id="userSubmit">Save changes</button>
+        <div class="form-message" id="userMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: set a new password for a user ===== -->
+  <div class="modal" id="passModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="passTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="passTitle">Reset password</h2>
+      <p class="hint-text pass-note">Passwords are stored scrambled and cannot be read by anyone. You can set a new one and tell the user.</p>
+
+      <form id="passForm" novalidate>
+        <div class="field">
+          <label for="passNew">New password</label>
+          <input type="text" id="passNew" name="password" placeholder="Min. 8 characters, letters and numbers" autocomplete="off" />
+          <span class="error"></span>
+        </div>
+        <button type="submit" class="btn" id="passSubmit">Set new password</button>
+        <div class="form-message" id="passMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: my own password ===== -->
+  <div class="modal" id="myPassModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="myPassTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="myPassTitle">Change my password</h2>
+
+      <form id="myPassForm" novalidate>
+        <div class="field">
+          <label for="mpCurrent">Current password</label>
+          <input type="password" id="mpCurrent" name="currentPassword" autocomplete="current-password" />
+          <span class="error"></span>
+        </div>
+        <div class="field">
+          <label for="mpNew">New password</label>
+          <input type="password" id="mpNew" name="newPassword" placeholder="Min. 8 characters, letters and numbers" autocomplete="new-password" />
+          <span class="error"></span>
+        </div>
+        <div class="field">
+          <label for="mpConfirm">Confirm new password</label>
+          <input type="password" id="mpConfirm" name="confirmPassword" autocomplete="new-password" />
+          <span class="error"></span>
+        </div>
+        <button type="submit" class="btn" id="myPassSubmit">Change password</button>
+        <div class="form-message" id="myPassMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Modal: edit product ===== -->
+  <div class="modal" id="productModal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="productEditTitle">
+      <button type="button" class="modal-close" data-close aria-label="Close">×</button>
+      <h2 id="productEditTitle">Edit product</h2>
+
+      <form id="productForm" novalidate>
+        <div class="field">
+          <label for="pdName">Product name</label>
+          <input type="text" id="pdName" name="name" maxlength="120" />
+        </div>
+        <div class="field">
+          <label for="pdDesc">Description</label>
+          <textarea id="pdDesc" name="description" rows="3" maxlength="1000"></textarea>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="pdPrice">Price (ETB)</label>
+            <input type="number" id="pdPrice" name="price" min="0.01" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="pdStock">Stock</label>
+            <input type="number" id="pdStock" name="stock" min="0" step="1" />
+          </div>
+        </div>
+        <button type="submit" class="btn" id="productSubmit">Save changes</button>
+        <div class="form-message" id="productMessage" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="../js/admin.js"></script>
+</body>
+</html>
