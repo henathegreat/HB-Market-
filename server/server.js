@@ -135,6 +135,10 @@ async function setupTables() {
         read_at         TIMESTAMP
       )
     `);
+    await pool.query("ALTER TABLE messages ADD COLUMN IF NOT EXISTS kind VARCHAR(10) NOT NULL DEFAULT 'text'");
+    await pool.query("ALTER TABLE messages ADD COLUMN IF NOT EXISTS file_path VARCHAR(120)");
+    await pool.query("ALTER TABLE messages ADD COLUMN IF NOT EXISTS file_name VARCHAR(100)");
+    await pool.query("ALTER TABLE messages ADD COLUMN IF NOT EXISTS file_mime VARCHAR(50)");
     await pool.query("CREATE INDEX IF NOT EXISTS idx_messages_conv ON messages(conversation_id, id)");
     await pool.query("CREATE INDEX IF NOT EXISTS idx_conversations_users ON conversations(consumer_id, producer_id)");
 
